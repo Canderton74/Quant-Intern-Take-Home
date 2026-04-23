@@ -92,13 +92,21 @@ Both files include an `if __name__ == "__main__"` block that invokes pytest on t
 
 ## Results of Backtest
                buy_and_hold trend_following mean_reversion cole_strategy
-cagr                 0.1365          0.0907         0.0214        0.0504
-ann_volatility       0.1705          0.1376         0.0855        0.0909
-sharpe               0.8363          0.6999         0.2905        0.5868
-max_drawdown        -0.3372         -0.3372        -0.2373       -0.1685
-max_dd_date      2020-03-23      2020-03-23     2020-03-24    2020-03-16
-num_trades                1               7            167            97
-win_rate             1.0000          0.5714         0.6826        0.7113
+cagr                 0.1365          0.0907         0.0214        0.0359
+ann_volatility       0.1705          0.1376         0.0855        0.0956
+sharpe               0.8363          0.6999         0.2905        0.4173
+max_drawdown        -0.3372         -0.3372        -0.2373       -0.2330
+max_dd_date      2020-03-23      2020-03-23     2020-03-24    2020-03-23
+num_trades                1               7            167            78
+win_rate             1.0000          0.5714         0.6826        0.6923
+
+## Why My Strategy
+
+My strategy (`cole_strategy`) takes the `mean_reversion` and adds price closing below 2 standard deviations of the last 14 bar period as another requirement for entry (this is done through bollinger bands). This adds another filter and makes the entry stricter and more selective to capture sharp movements. This is because mean reversion is usually targetting a pricing inefficiency where the market over reacts or swings too low for xyz reason, and thus the asset is underpriced. This is usually indicated by a sharp move and the bollinger bands help ensure that.
+
+For exit I got rid of the RSI>50 condition, as if the move back to the mean lasts a few days then it exits early. Instead, I replaced the exit with 2 options, which don't have to be met together to close the position. Exit 1 is when price reverts back to the mean over the last 14 days. Exit 2 is when the trade has gone on for 10 days.
+
+I ran a study, `trade_duration_study.py`, to analyze how long winning trades are, and how long losing trades are. I discovered that in a crash, price doesn't meet the mean for a while and continues to fall. Almost every winning trade that successfully reverts to the mean does so within 10 days, thus my reasoning for exit 2. This was test on data from 1990 to 2010. If I wasn't testing the strategies on 2010-2025, I would have tested on pockets of data throughout recent years as the market structure and regime has changed since 2010. Since I couldn't do so the testing is biased on outdated data.
 
 ## Part 2
 
