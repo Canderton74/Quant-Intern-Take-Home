@@ -70,8 +70,8 @@ def cole_strategy(
     when price is stretched below its lower Bollinger Band *and* RSI
     confirms the move is oversold.
 
-    Entry (both must hold):
-        close < lower Bollinger Band   AND   RSI(rsi_length) < entry_rsi
+    Entry:
+        close < lower Bollinger Band
 
     Exit (any one triggers):
         close >= SMA(sma_length)     -- reverted to mean
