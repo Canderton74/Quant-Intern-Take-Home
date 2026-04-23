@@ -111,3 +111,7 @@ I ran a study, `trade_duration_study.py`, to analyze how long winning trades are
 ## Part 2
 
 For part 2, please look into branch `broken-backtest`.
+
+## Part 3 and 4
+
+Both the memo and stress test are in the root directory as PDFs
