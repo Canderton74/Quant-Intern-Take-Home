@@ -58,7 +58,8 @@ def mean_reversion(
 
 def cole_strategy(
     prices: pd.Series,
-    rsi_length: int = 14,
+    rsi_length: int = 2,
+    entry_rsi: float = 10.0,
     bb_length: int = 14,
     bb_std: float = 2.0,
     sma_length: int = 14,
@@ -80,10 +81,11 @@ def cole_strategy(
     This strategy has to be written as loop since exit depends on multiple conditions. Can't be vectorised.
     """
     bb = bollinger(prices, length=bb_length, num_std=bb_std)
+    r = rsi(prices, length=rsi_length)
     target = sma(prices, length=sma_length)
 
     # Comparisons against NaN are False, so warmup naturally keeps us flat.
-    entry_cond = (prices < bb["lower"])
+    entry_cond = (prices < bb["lower"]) & (r < entry_rsi)
     exit_cond = (prices >= target)
 
     signal = pd.Series(0.0, index=prices.index, name="cole_strategy")
