@@ -90,6 +90,16 @@ python tests/test_strategy.py
 
 Both files include an `if __name__ == "__main__"` block that invokes pytest on themselves, so they work either way.
 
+## Results of Backtest
+               buy_and_hold trend_following mean_reversion cole_strategy
+cagr                 0.1365          0.0907         0.0214        0.0504
+ann_volatility       0.1705          0.1376         0.0855        0.0909
+sharpe               0.8363          0.6999         0.2905        0.5868
+max_drawdown        -0.3372         -0.3372        -0.2373       -0.1685
+max_dd_date      2020-03-23      2020-03-23     2020-03-24    2020-03-16
+num_trades                1               7            167            97
+win_rate             1.0000          0.5714         0.6826        0.7113
+
 ## Part 2
 
 For part 2, please look into branch `broken-backtest`.
