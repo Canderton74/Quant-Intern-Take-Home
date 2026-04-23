@@ -48,11 +48,11 @@ def run(
     cost_rate = (fee_bps + slippage_bps) / 10_000.0
 
     returns = prices.pct_change().fillna(0.0)
-    weights = signal.shift(2).fillna(0.0)  # new weight active from T+2 onwards; T+2 as PnL is not harvested T+1 as we trade close-to-close. In the same line of logic we harvest an extra T+1 of PnL when selling.
+    weights = signal.shift(1).fillna(0.0)  # backtesting bug, should be shift(2) because we capture T+2's return when we execute on T+1's close.
 
     # Flip observed on signal day T; cost hits equity on execution day T+1.
-    signal_flip = (signal - signal.shift(1).fillna(0.0)).abs()
-    costs = signal_flip.shift(1).fillna(0.0) * cost_rate
+    trade_signal = (signal - signal.shift(1).fillna(0.0)).abs()
+    costs = trade_signal.shift(1).fillna(0.0) * cost_rate
 
     strategy_returns = weights * returns - costs
     equity = capital * (1.0 + strategy_returns).cumprod()
