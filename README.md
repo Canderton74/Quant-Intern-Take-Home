@@ -89,3 +89,5 @@ python tests/test_strategy.py
 ```
 
 Both files include an `if __name__ == "__main__"` block that invokes pytest on themselves, so they work either way.
+
+For part 2, please look into branch `broken-backtest`
