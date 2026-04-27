@@ -88,17 +88,22 @@ python tests/test_backtest.py
 python tests/test_strategy.py
 ```
 
+
 Both files include an `if __name__ == "__main__"` block that invokes pytest on themselves, so they work either way.
 
 ## Results of Backtest
-               buy_and_hold trend_following mean_reversion cole_strategy
-cagr                 0.1365          0.0907         0.0214        0.0359
-ann_volatility       0.1705          0.1376         0.0855        0.0956
-sharpe               0.8363          0.6999         0.2905        0.4173
-max_drawdown        -0.3372         -0.3372        -0.2373       -0.2330
-max_dd_date      2020-03-23      2020-03-23     2020-03-24    2020-03-23
-num_trades                1               7            167            78
-win_rate             1.0000          0.5714         0.6826        0.6923
+
+SPY, 2010-01-01 to 2025-01-01, $100,000 starting capital, 1 bp transaction cost.
+
+| Metric                | `buy_and_hold` | `trend_following` | `mean_reversion` | `cole_strategy` |
+|-----------------------|---------------:|------------------:|-----------------:|----------------:|
+| CAGR                  |         0.1365 |            0.0907 |           0.0214 |          0.0359 |
+| Annualized volatility |         0.1705 |            0.1376 |           0.0855 |          0.0956 |
+| Sharpe                |         0.8363 |            0.6999 |           0.2905 |          0.4173 |
+| Max drawdown          |        -0.3372 |           -0.3372 |          -0.2373 |         -0.2330 |
+| Max drawdown date     |     2020-03-23 |        2020-03-23 |       2020-03-24 |      2020-03-23 |
+| Number of trades      |              1 |                 7 |              167 |              78 |
+| Win rate              |         1.0000 |            0.5714 |           0.6826 |          0.6923 |
 
 ## Why My Strategy
 
