@@ -16,24 +16,28 @@ This is a lookahead bias as we are executing on T+1's close. That means we're ha
 
 As a reminder weights is just the weighting of portfolio that we are in the stock.
 
-**Results with bug:**
-               buy_and_hold trend_following mean_reversion cole_strategy
-cagr                 0.1367          0.0952         0.0506        0.0410
-ann_volatility       0.1705          0.1367         0.0846        0.0892
-sharpe               0.8373          0.7340         0.6258        0.4960
-max_drawdown        -0.3372         -0.3372        -0.1509       -0.1889
-max_dd_date      2020-03-23      2020-03-23     2011-08-08    2020-03-16
-num_trades                1               7            167            83
-win_rate             1.0000          0.5714         0.6826        0.6867
+**Results with bug (`shift(1)`):**
 
-**Results without bug (working backtest):**
-               buy_and_hold trend_following mean_reversion cole_strategy
-cagr                 0.1365          0.0907         0.0214        0.0359
-ann_volatility       0.1705          0.1376         0.0855        0.0956
-sharpe               0.8363          0.6999         0.2905        0.4173
-max_drawdown        -0.3372         -0.3372        -0.2373       -0.2330
-max_dd_date      2020-03-23      2020-03-23     2020-03-24    2020-03-23
-num_trades                1               7            167            78
-win_rate             1.0000          0.5714         0.6826        0.6923
+| Metric                | `buy_and_hold` | `trend_following` | `mean_reversion` | `cole_strategy` |
+|-----------------------|---------------:|------------------:|-----------------:|----------------:|
+| CAGR                  |         0.1367 |            0.0952 |           0.0506 |          0.0410 |
+| Annualized volatility |         0.1705 |            0.1367 |           0.0846 |          0.0892 |
+| Sharpe                |         0.8373 |            0.7340 |           0.6258 |          0.4960 |
+| Max drawdown          |        -0.3372 |           -0.3372 |          -0.1509 |         -0.1889 |
+| Max drawdown date     |     2020-03-23 |        2020-03-23 |       2011-08-08 |      2020-03-16 |
+| Number of trades      |              1 |                 7 |              167 |              83 |
+| Win rate              |         1.0000 |            0.5714 |           0.6826 |          0.6867 |
+
+**Results without bug (correct `shift(2)`):**
+
+| Metric                | `buy_and_hold` | `trend_following` | `mean_reversion` | `cole_strategy` |
+|-----------------------|---------------:|------------------:|-----------------:|----------------:|
+| CAGR                  |         0.1365 |            0.0907 |           0.0214 |          0.0359 |
+| Annualized volatility |         0.1705 |            0.1376 |           0.0855 |          0.0956 |
+| Sharpe                |         0.8363 |            0.6999 |           0.2905 |          0.4173 |
+| Max drawdown          |        -0.3372 |           -0.3372 |          -0.2373 |         -0.2330 |
+| Max drawdown date     |     2020-03-23 |        2020-03-23 |       2020-03-24 |      2020-03-23 |
+| Number of trades      |              1 |                 7 |              167 |              78 |
+| Win rate              |         1.0000 |            0.5714 |           0.6826 |          0.6923 |
 
 This throws off the drawdown and sharpe ratio without changing the # of trades itself. In all but `mean_reversion` we see minor skewing (which is up to luck and variance) but `mean_reversion` sees a little over 100% increase in sharpe and about a 30% decrease in max drawdown. This is extremely dangerous as a researcher might use this backtesting engine and deploy a horrible strategy that they believe worked well. It also highlights the importance of incubating a strategy before full deployment.
